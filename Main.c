@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include"functions.h"
-int main(){
+//extern char token_buffer[];
+int main()
+{
     printf("main");
     return 0;
 }
