@@ -3,6 +3,6 @@
 //extern char token_buffer[];
 int main()
 {
-    printf("main");
+    char*ls=analyse_lexical("test.txt");
     return 0;
 }

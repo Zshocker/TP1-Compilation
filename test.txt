@@ -1,0 +1,5 @@
+begin
+    var:=.5e4;
+    read(var);
+    write(3+5,var);
+end
