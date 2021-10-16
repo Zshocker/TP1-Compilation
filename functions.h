@@ -96,7 +96,7 @@ token scanner(FILE*file)
             } 
         }else return lexical_error(file,in_char," ");
     }
-    return err;
+    return scanof;
 }
 void putInFile(char*car,FILE*file)
 {
