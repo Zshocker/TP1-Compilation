@@ -100,7 +100,7 @@ token scanner(FILE*file)
 }
 void putInFile(char*car,FILE*file)
 {
-    fprintf(file," %s ",car);
+    fprintf(file,"[%s]",car);
 }
 char* analyse_lexical(char*chemin)
 {
