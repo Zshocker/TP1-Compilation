@@ -59,14 +59,22 @@ token scanner(FILE*file)
             int cmppoit=0;
             int cmpe=0;
             if(in_char=='.')cmppoit++;
-            for ( c = getc(file); isdigit(c)||c=='e'||c=='E'||c=='.' ;c=getc(file) )
+            for ( c = getc(file); isdigit(c)||c=='.' ;c=getc(file) )
             { 
                 if(c=='.')cmppoit++;
-                else if(c=='e'||c=='E')cmpe++;
-                if(cmppoit>1)
-                lexical_error(file,c,"mulitple . detected");
-                if(cmpe>1)lexical_error(file,c,"mulitple e detected");
+                if(cmppoit>1)lexical_error(file,c,"multiple . detected in a float");
                 buffer_char(c);
+            }
+            if(c=='e'||c=='E')
+            {
+                cmpe++;
+                c=getc(file);
+                if(c=='+'||c=='-')
+                {
+                    if(isdigit(getc(file)))for ( c = getc(file); isdigit(c) ;c=getc(file) ) buffer_char(c); 
+                    else lexical_error(file,c,"a number was expected in exp of the float after + or -");
+                }else if(isdigit(c))for ( c = getc(file); isdigit(c) ;c=getc(file) ) buffer_char(c); 
+                else lexical_error(file,c,"a + or a - or a number was expected in exp of the float");
             }
             ungetc(c,file);
             if(cmpe>0||cmppoit>0)return floatt;

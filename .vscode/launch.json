@@ -12,7 +12,7 @@
       "program": "c:\\Users\\hp\\Desktop\\VS code Projects\\COMPILATION\\TP1-Compilation\\build\\Debug\\outDebug",
       "internalConsoleOptions": "openOnSessionStart",
       "MIMode": "gdb",
-      "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
+      "miDebuggerPath": "C:\\Program Files\\mingw-w64\\x86_64-8.1.0-posix-seh-rt_v6-rev0\\mingw64\\bin\\gdb.exe",
       "externalConsole": false,
       "setupCommands": [
         {
