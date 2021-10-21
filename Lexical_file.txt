@@ -1,1 +1,1 @@
-[begin][id][assignOp][float][plusOp][intliteral][semicolon][read][lparem][id][rparem][semicolon][write][lparem][intliteral][plusOp][intliteral][comma][id][rparem][semicolon][end]
+[begin][id][assignOp][float][plusOp][intliteral][semicolon][read][lparem][id][rparem][semicolon][write][lparem][intliteral][plusOp][intliteral][comma][id][rparem][semicolon][end][scanof]

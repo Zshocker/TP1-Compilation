@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include"functions.h"
+#include"lexical_scanner.h"
 //extern char token_buffer[];
 int main()
 {
