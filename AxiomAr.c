@@ -70,7 +70,7 @@ char* turnAxiom(Axiom A)
     return TableAxiom[A];
 }
 
-void printAxiomAr2D(AxiomAr*root,char*prefix,char*childPrefix)
+void PutArbInMassStr(AxiomAr*root,char*prefix,char*childPrefix)
 {
     if(prefix)append(prefix);
     append(turnAxiom(root->Ax));
@@ -91,12 +91,12 @@ void printAxiomAr2D(AxiomAr*root,char*prefix,char*childPrefix)
         if(crt->next){
             strcat(cpyChild,"|-- ");
             strcat(cpyChild2,"|  ");
-            printAxiomAr2D(crt->Elem,cpyChild,cpyChild2);
+            PutArbInMassStr(crt->Elem,cpyChild,cpyChild2);
         }else{
             
             strcat(cpyChild,"+-- ");
             strcat(cpyChild2,"    ");
-            printAxiomAr2D(crt->Elem,cpyChild,cpyChild2);
+            PutArbInMassStr(crt->Elem,cpyChild,cpyChild2);
         }
         crt=crt->next;
     }
@@ -122,6 +122,6 @@ void V2_print_tree(AxiomAr*root,int ide)
 void PrintMyAxiomAr(AxiomAr*Ar)
 {
     init_Mass();
-    printAxiomAr2D(Ar,NULL,NULL);
+    PutArbInMassStr(Ar,NULL,NULL);
     printf("%s",MassiveString);
 }
