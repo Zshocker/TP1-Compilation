@@ -1,2 +1,4 @@
 *.exe
 .vscode
+ManipDesArbre.h
+printArbre2D.h

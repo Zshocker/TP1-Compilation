@@ -1,26 +1,13 @@
 #pragma once
 #include"structs.h"
-void init_buffer()
-{
-    token_buffer[0]='\0';
-}
-void clear_buffer()
-{
-    int i=0;
-    while(token_buffer[i]!='\0')token_buffer[i++]='\0';
-}
-void buffer_char(char car)
-{
-    strncat(token_buffer,&car,1);
-}
-token lexical_error(FILE*file,char c,char*msg)
+Axiom lexical_error(FILE*file,char c,char*msg)
 {
     printf("\n lexical error on line %d unexpected %c %s\n",NUMLIGNE,c,msg);
     fclose(file);
     exit(-1);
     return err;
 }
-token check_reserved()
+Axiom check_reserved()
 {
     if(!strcasecmp(token_buffer,"begin"))return begin;
     if(!strcasecmp(token_buffer,"end"))return end;    
@@ -28,7 +15,7 @@ token check_reserved()
     if(!strcasecmp(token_buffer,"write"))return write;    
     return id;
 }
-token scanner(FILE*file)
+Axiom scanner(FILE*file,FILE*LEX)
 {
     char in_char,c;
     clear_buffer();
@@ -36,7 +23,10 @@ token scanner(FILE*file)
     while((in_char=getc(file))!=EOF)
     {
         if(isspace(in_char)){
-            if(in_char=='\n')NUMLIGNE++;
+            if(in_char=='\n'){
+                NUMLIGNE++;
+                fprintf(LEX,"\n");
+            }
             continue;
             }
         else if(isalpha(in_char)){
@@ -104,10 +94,10 @@ char* analyse_lexical(char*chemin)
 {
     FILE*CodeSource;
     CodeSource=fopen(chemin,"r");
-    token tok;
+    Axiom tok;
     char*Lexia="Lexical_file.txt";
     FILE*LEX=fopen(Lexia,"w");
-    while((tok=scanner(CodeSource))!=scanof)
+    while((tok=scanner(CodeSource,LEX))!=scanof)
     {
         putInFile(TableTokens[tok],LEX);
     }
