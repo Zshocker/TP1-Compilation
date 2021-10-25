@@ -1,9 +1,4 @@
 #include"AxiomAr.c"
-void syntax_Eror(Axiom A,Axiom Expected)
-{
-    printf("\nSyntax Error %s detected %s was expected in line %li \n",TableAxiom[A],TableAxiom[Expected],NUMLIGNE);
-    exit(-1);
-}
 Axiom turnBufferToToken()
 {
     for (int i = 0; i < 15; i++)

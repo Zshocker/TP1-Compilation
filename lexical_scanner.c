@@ -1,12 +1,6 @@
 #pragma once
 #include"structs.h"
-Axiom lexical_error(FILE*file,char c,char*msg)
-{
-    printf("\n lexical error on line %d unexpected %c %s\n",NUMLIGNE,c,msg);
-    fclose(file);
-    exit(-1);
-    return err;
-}
+
 Axiom check_reserved()
 {
     if(!strcasecmp(token_buffer,"begin"))return begin;
@@ -25,7 +19,7 @@ Axiom scanner(FILE*file,FILE*LEX)
         if(isspace(in_char)){
             if(in_char=='\n'){
                 NUMLIGNE++;
-                fprintf(LEX,"\n");
+                if(LEX)fprintf(LEX,"\n");
             }
             continue;
             }

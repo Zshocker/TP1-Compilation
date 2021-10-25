@@ -39,3 +39,24 @@ void buffer_char(char car)
 {
     strncat(token_buffer,&car,1);
 }
+void syntax_Eror(Axiom A,Axiom Expected)
+{
+    printf("\nSyntax Error %s detected %s was expected in line %li \n",TableAxiom[A],TableAxiom[Expected],NUMLIGNE);
+    exit(-1);
+}
+Axiom lexical_error(FILE*file,char c,char*msg)
+{
+    printf("\n lexical error on line %d unexpected %c %s\n",NUMLIGNE,c,msg);
+    fclose(file);
+    exit(-1);
+    return err;
+}
+void print_fichier(char *chemin)
+{
+    FILE *file=fopen(chemin,"r");
+    char c;
+    if(file){
+        while((c=getc(file))!=EOF)printf("%c",c);
+    }
+    fclose(file);
+}
