@@ -1,7 +1,7 @@
 #include"AxiomAr.c"
 Axiom turnBufferToToken()
 {
-    for (int i = 0; i < 15; i++)
+    for (int i = 0; i < 16; i++)
     {
         if(!strcmp(token_buffer,TableTokens[i]))return (Axiom)i;
     }
@@ -44,7 +44,7 @@ AxiomAr* Prim(FILE*F)
     Axiom tok=next_token(F);
     AxiomAr*Ar=create_AxiomAr(prim);
     switch (tok)
-    {
+    {                               
     case lparem:
         Ar=Match(Ar,tok,lparem);
         Ar=Ar_Insert_in_Fils_Ar(Ar,Expression(F));

@@ -19,6 +19,7 @@ typedef struct ls
     void* Elem;
     struct ls *next;
 }ListAr;
+
 typedef struct Ar
 {
     Axiom Ax;
