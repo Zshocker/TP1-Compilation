@@ -9,9 +9,10 @@ int main()
     AxiomAr*Ar=NULL;
     printf(" \n 1-analyse lexical. ");
     printf("\n 2-analyse syntax 2 pass. ");
-    printf("\n 3-analyse lexical. \n");
+    printf("\n 3-analyse syntax 1 pass. \n");
     printf("\n other- exit. \n");
     do{
+        NUMLIGNE=1;
         printf("\nvotre choix:");
         scanf("%d",&choix);
         switch (choix)

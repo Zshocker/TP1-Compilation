@@ -8,11 +8,11 @@ char token_buffer[100];
 /*typedef enum token_type{
     begin,end,read,write,id,intliteral,rparem,lparem,semicolon,comma,assignOp,plusOp,minusOp,floatt,scanof,err
 }token;*/
-char TableTokens[15][20]={"begin","end","read","write","id","intliteral","rparem","lparem","semicolon","comma","assignOp","plusOp","minusOp","float","scanof"};
+char TableTokens[16][20]={"begin","end","read","write","id","intliteral","rparem","lparem","semicolon","comma","assignOp","plusOp","minusOp","float","scanof","error"};
 typedef enum {
-    begin,end,read,write,id,intliteral,rparem,lparem,semicolon,comma,assignOp,plusOp,minusOp,floatt,scanof,system_global,program,inst_list,inst,id_list,expression,expr_list,add_op,prim,err
+    begin,end,read,write,id,intliteral,rparem,lparem,semicolon,comma,assignOp,plusOp,minusOp,floatt,scanof,err,system_global,program,inst_list,inst,id_list,expression,expr_list,add_op,prim
 }Axiom;
-char TableAxiom[32][20]={"begin","end","read","write","id","intliteral","rparem","lparem","semicolon","comma","assignOp","plusOp","minusOp","float","scanof",
+char TableAxiom[32][20]={"begin","end","read","write","id","intliteral","rparem","lparem","semicolon","comma","assignOp","plusOp","minusOp","float","scanof","error",
                         "system_global","program","inst_list","inst","id_list","expression","expr_list","add_op","prim"};
 typedef struct ls
 {
@@ -40,16 +40,14 @@ void buffer_char(char car)
 {
     strncat(token_buffer,&car,1);
 }
-void syntax_Eror(Axiom A,Axiom Expected)
+Axiom syntax_Eror(Axiom A,Axiom Expected)
 {
     printf("\nSyntax Error %s detected %s was expected in line %li \n",TableAxiom[A],TableAxiom[Expected],NUMLIGNE);
-    exit(-1);
+    return err;
 }
 Axiom lexical_error(FILE*file,char c,char*msg)
 {
     printf("\n lexical error on line %d unexpected %c %s\n",NUMLIGNE,c,msg);
-    fclose(file);
-    exit(-1);
     return err;
 }
 void print_fichier(char *chemin)

@@ -36,7 +36,7 @@ Axiom scanner(FILE*file,FILE*LEX)
             for ( c = getc(file); isdigit(c)||c=='.' ;c=getc(file) )
             { 
                 if(c=='.')cmppoit++;
-                if(cmppoit>1)lexical_error(file,c,"multiple . detected in a float");
+                if(cmppoit>1)return lexical_error(file,c,"multiple . detected in a float");
                 buffer_char(c);
             }
             if(c=='e'||c=='E')
@@ -46,9 +46,9 @@ Axiom scanner(FILE*file,FILE*LEX)
                 if(c=='+'||c=='-')
                 {
                     if(isdigit(getc(file)))for ( c = getc(file); isdigit(c) ;c=getc(file) ) buffer_char(c); 
-                    else lexical_error(file,c,"a number was expected in exp of the float after + or -");
+                    else return lexical_error(file,c,"a number was expected in exp of the float after + or -");
                 }else if(isdigit(c))for ( c = getc(file); isdigit(c) ;c=getc(file) ) buffer_char(c); 
-                else lexical_error(file,c,"a + or a - or a number was expected in exp of the float");
+                else return lexical_error(file,c,"a + or a - or a number was expected in exp of the float");
             }
             ungetc(c,file);
             if(cmpe>0||cmppoit>0)return floatt;
@@ -86,6 +86,7 @@ void putInFile(char*car,FILE*file)
 }
 char* analyse_lexical(char*chemin)
 {
+    NUMLIGNE=1;
     FILE*CodeSource;
     CodeSource=fopen(chemin,"r");
     Axiom tok;

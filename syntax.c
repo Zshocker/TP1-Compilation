@@ -34,6 +34,7 @@ AxiomAr*Match(AxiomAr*Ar,Axiom A,Axiom ToMatch)
         Ar_Insert_in_Fils(Ar,A);
     }else {
         syntax_Eror(A,ToMatch);
+        Ar_Insert_in_Fils(Ar,err);
     }
     return Ar;
 }
@@ -62,6 +63,7 @@ AxiomAr* Prim(FILE*F)
         break;    
     default:
         syntax_Eror(tok,prim);
+        Ar=Ar_Insert_in_Fils(Ar,err);
         break;
     }
     return Ar;
@@ -74,7 +76,9 @@ AxiomAr*AddOP(FILE*F,Axiom t)
     }else if(t==minusOp)
     {
         Ar=Match(Ar,t,minusOp);
-    }else syntax_Eror(t,add_op);
+    }else{
+        Ar=Match(Ar,syntax_Eror(t,add_op),err);
+         }
     return Ar;
 }
 AxiomAr* Expression(FILE*F)
@@ -147,7 +151,7 @@ AxiomAr*Inst(FILE*F)
         Ar=Match(Ar,next_token(F),semicolon);
         break;    
     default:
-        syntax_Eror(tok,inst);
+        Ar=Match(Ar,syntax_Eror(tok,inst),err);
         break;
     }
     return Ar;
