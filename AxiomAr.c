@@ -126,3 +126,14 @@ void PrintMyAxiomAr(AxiomAr*Ar)
     PutArbInMassStr(Ar,NULL,NULL);
     printf("%s",MassiveString);
 }
+AxiomAr*Match(AxiomAr*Ar,Axiom A,Axiom ToMatch)
+{
+    if(A==ToMatch)
+    {
+        Ar_Insert_in_Fils(Ar,A);
+    }else {
+        syntax_Eror(A,ToMatch);
+        Ar_Insert_in_Fils(Ar,LexErr);
+    }
+    return Ar;
+}

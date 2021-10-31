@@ -9,11 +9,11 @@ char token_buffer[100];
 /*typedef enum token_type{
     begin,end,read,write,id,intliteral,rparem,lparem,semicolon,comma,assignOp,plusOp,minusOp,floatt,scanof,err
 }token;*/
-char TableTokens[16][20]={"begin","end","read","write","id","intliteral","rparem","lparem","semicolon","comma","assignOp","plusOp","minusOp","float","scanof","error"};
+char TableTokens[16][20]={"begin","end","read","write","id","intliteral","rparem","lparem","semicolon","comma","assignOp","plusOp","minusOp","float","scanof","erreur"};
 typedef enum {
-    begin,end,read,write,id,intliteral,rparem,lparem,semicolon,comma,assignOp,plusOp,minusOp,floatt,scanof,err,system_global,program,inst_list,inst,id_list,expression,expr_list,add_op,prim
+    begin,end,read,write,id,intliteral,rparem,lparem,semicolon,comma,assignOp,plusOp,minusOp,floatt,scanof,LexErr,system_global,program,inst_list,inst,id_list,expression,expr_list,add_op,prim
 }Axiom;
-char TableAxiom[32][20]={"begin","end","read","write","id","intliteral","rparem","lparem","semicolon","comma","assignOp","plusOp","minusOp","float","scanof","error",
+char TableAxiom[32][20]={"begin","end","read","write","id","intliteral","rparem","lparem","semicolon","comma","assignOp","plusOp","minusOp","float","scanof","erreur",
                         "system_global","program","inst_list","inst","id_list","expression","expr_list","add_op","prim"};
 typedef struct ls
 {
@@ -46,13 +46,13 @@ void buffer_char(char car)
 }
 Axiom syntax_Eror(Axiom A,Axiom Expected)
 {
-    printf("\nSyntax Error %s detected %s was expected in line %li \n",TableAxiom[A],TableAxiom[Expected],NUMLIGNE);
-    return err;
+    printf("\nSyntax Error: detecter un %s a la place d'un %s dans la ligne %li \n",TableAxiom[A],TableAxiom[Expected],NUMLIGNE);
+    return LexErr;
 }
 Axiom lexical_error(FILE*file,char c,char*msg)
 {
-    printf("\n lexical error on line %d unexpected %c %s\n",NUMLIGNE,c,msg);
-    return err;
+    printf("\nLexical Error: Dans la ligne %d [ %c ] inattendue  %s\n",NUMLIGNE,c,msg);
+    return LexErr;
 }
 void print_fichier(char *chemin)
 {

@@ -5,7 +5,7 @@ Axiom turnBufferToToken()
     {
         if(!strcmp(token_buffer,TableTokens[i]))return (Axiom)i;
     }
-    return err;
+    return LexErr;
 }
 Axiom next_token(FILE*F)
 {
@@ -19,24 +19,13 @@ Axiom next_token(FILE*F)
     }
     if(c!='['){
         printf("False reading token");
-        exit(-1);
+        return LexErr;
     }
     while((c=getc(F))!=']')
     {
         buffer_char(c);
     }
     return turnBufferToToken();
-}
-AxiomAr*Match(AxiomAr*Ar,Axiom A,Axiom ToMatch)
-{
-    if(A==ToMatch)
-    {
-        Ar_Insert_in_Fils(Ar,A);
-    }else {
-        syntax_Eror(A,ToMatch);
-        Ar_Insert_in_Fils(Ar,err);
-    }
-    return Ar;
 }
 AxiomAr* Expression(FILE*F);
 
@@ -60,10 +49,15 @@ AxiomAr* Prim(FILE*F)
         break;
     case floatt:
         Ar=Match(Ar,tok,floatt);
-        break;    
+        break; 
+    case LexErr:
+        Ar=Match(Ar,tok,LexErr);
+        syntax_Eror(tok,prim);
+        Prim(F);
+        break;   
     default:
         syntax_Eror(tok,prim);
-        Ar=Ar_Insert_in_Fils(Ar,err);
+        Ar=Ar_Insert_in_Fils(Ar,LexErr);
         break;
     }
     return Ar;
@@ -77,7 +71,7 @@ AxiomAr*AddOP(FILE*F,Axiom t)
     {
         Ar=Match(Ar,t,minusOp);
     }else{
-        Ar=Match(Ar,syntax_Eror(t,add_op),err);
+        Ar=Match(Ar,syntax_Eror(t,add_op),LexErr);
          }
     return Ar;
 }
@@ -124,59 +118,74 @@ AxiomAr*Id_list(FILE*F)
    ReturnToplace(F,rem);
     return Ar;
 }
-AxiomAr*Inst(FILE*F)
+AxiomAr*Inst(FILE*F,Axiom*s)
 {
     AxiomAr*Ar=create_AxiomAr(inst);
-    Axiom tok=next_token(F);
+    Axiom tok;
+    if(*s!=LexErr)
+    {
+        tok=*s;
+    }else tok=next_token(F);
     switch (tok)
     {
     case id:
         Ar=Match(Ar,tok,id);
         Ar=Match(Ar,next_token(F),assignOp);
         Ar=Ar_Insert_in_Fils_Ar(Ar,Expression(F));
-        Ar=Match(Ar,next_token(F),semicolon);
+        Ar=Match(Ar,*s=next_token(F),semicolon);
         break;
     case read:
         Ar=Match(Ar,tok,read);
         Ar=Match(Ar,next_token(F),lparem);
         Ar=Ar_Insert_in_Fils_Ar(Ar,Id_list(F));
-        Ar=Match(Ar,next_token(F),rparem);
-        Ar=Match(Ar,next_token(F),semicolon);
+        Ar=Match(Ar,tok=next_token(F),rparem); 
+        if(tok==semicolon)Ar=Match(Ar,*s=tok,semicolon);
+        else Ar=Match(Ar,*s=next_token(F),semicolon);
         break;
     case write:
         Ar=Match(Ar,tok,write);
         Ar=Match(Ar,next_token(F),lparem);
         Ar=Ar_Insert_in_Fils_Ar(Ar, Expr_list(F));
-        Ar=Match(Ar,next_token(F),rparem);
-        Ar=Match(Ar,next_token(F),semicolon);
+        Ar=Match(Ar,tok=next_token(F),rparem);
+        if(tok==semicolon)Ar=Match(Ar,*s=tok,semicolon);
+        else Ar=Match(Ar,*s=next_token(F),semicolon);
         break;    
     default:
-        Ar=Match(Ar,syntax_Eror(tok,inst),err);
+        Ar=Match(Ar,*s=syntax_Eror(tok,inst),LexErr);
         break;
     }
     return Ar;
 }
 AxiomAr*Inst_list(FILE*F)
 {
+    Axiom tok=LexErr;
     AxiomAr*Ar=create_AxiomAr(inst_list);
-    Ar=Ar_Insert_in_Fils_Ar(Ar,Inst(F));
     FilePlace rem=RememberPlace(F);
+    do
+    {
+        tok=LexErr;
+        Ar=Ar_Insert_in_Fils_Ar(Ar,Inst(F,&tok));
+    }while(tok!=semicolon&&tok!=end);
+    tok=LexErr;
     while (1)
     {
-         rem=RememberPlace(F);
-         switch (next_token(F)) 
-         {
-         case id:
-         case read:
-         case write:
+        rem=RememberPlace(F);
+        switch (next_token(F)) 
+        {
+        case id:
+        case read:
+        case write:
         ReturnToplace(F,rem);
-         Ar=Ar_Insert_in_Fils_Ar(Ar,Inst(F));
-         break;
-         default:
-           ReturnToplace(F,rem);
+        do{
+            tok=LexErr;
+            Ar=Ar_Insert_in_Fils_Ar(Ar,Inst(F,&tok));
+        }while(tok!=semicolon&&tok!=end);
+        break;
+        default:
+            ReturnToplace(F,rem);
             return Ar;
             break;
-         }
+        }
     }
    ReturnToplace(F,rem);
     return Ar;

@@ -36,7 +36,7 @@ Axiom scanner(FILE*file,FILE*LEX)
             for ( c = getc(file); isdigit(c)||c=='.' ;c=getc(file) )
             { 
                 if(c=='.')cmppoit++;
-                if(cmppoit>1)return lexical_error(file,c,"multiple . detected in a float");
+                if(cmppoit>1)return lexical_error(file,c,"multiple . detecter dans un reel");
                 buffer_char(c);
             }
             if(c=='e'||c=='E')
@@ -46,9 +46,9 @@ Axiom scanner(FILE*file,FILE*LEX)
                 if(c=='+'||c=='-')
                 {
                     if(isdigit(getc(file)))for ( c = getc(file); isdigit(c) ;c=getc(file) ) buffer_char(c); 
-                    else return lexical_error(file,c,"a number was expected in exp of the float after + or -");
+                    else return lexical_error(file,c,"un nombre etait attendue dans l'exp de reel apres + or -");
                 }else if(isdigit(c))for ( c = getc(file); isdigit(c) ;c=getc(file) ) buffer_char(c); 
-                else return lexical_error(file,c,"a + or a - or a number was expected in exp of the float");
+                else return lexical_error(file,c,"un + ou une - ou un nombre etait attendue dans l'exp de reel");
             }
             ungetc(c,file);
             if(cmpe>0||cmppoit>0)return floatt;
@@ -67,7 +67,7 @@ Axiom scanner(FILE*file,FILE*LEX)
             c=getc(file);
             if(c=='=')return assignOp;
             ungetc(c,file);
-            return lexical_error(file,c,"= was expected");
+            return lexical_error(file,c,"= etait attendue");
         }else if(in_char=='-'){
             c=getc(file);
             if(c=='-'){
