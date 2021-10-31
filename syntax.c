@@ -86,42 +86,42 @@ AxiomAr* Expression(FILE*F)
     Axiom t;
     AxiomAr*Ar=create_AxiomAr(expression);
     Ar=Ar_Insert_in_Fils_Ar(Ar,Prim(F));
-    long rem=ftell(F);
+    FilePlace rem=RememberPlace(F);
     for ( t = next_token(F); t==plusOp||t==minusOp; t=next_token(F))
     {
         Ar=Ar_Insert_in_Fils_Ar(Ar,AddOP(F,t));
         Ar=Ar_Insert_in_Fils_Ar(Ar,Expression(F));
-        rem = ftell(F);
+        rem = RememberPlace(F);
     }
-    fseek(F,rem,SEEK_SET);
+   ReturnToplace(F,rem);
     return Ar;
 }
 AxiomAr *Expr_list(FILE*F)
 {
     AxiomAr*Ar=create_AxiomAr(expr_list);
     Ar=Ar_Insert_in_Fils_Ar(Ar,Expression(F));
-     long rem=ftell(F);
+     FilePlace rem=RememberPlace(F);
     while (next_token(F)==comma)
     {
          Ar=Match(Ar,comma,comma);
          Ar=Ar_Insert_in_Fils_Ar(Ar,Expression(F));
-         rem = ftell(F);
+         rem = RememberPlace(F);
     }
-    fseek(F,rem,SEEK_SET);
+   ReturnToplace(F,rem);
     return Ar;
 }
 AxiomAr*Id_list(FILE*F)
 {
     AxiomAr*Ar=create_AxiomAr(id_list);
     Ar=Match(Ar,next_token(F),id);
-    long rem=ftell(F);
+    FilePlace rem=RememberPlace(F);
     while (next_token(F)==comma)
     {
          Ar=Match(Ar,comma,comma);
          Ar=Match(Ar,next_token(F),id);
-         rem = ftell(F);
+         rem = RememberPlace(F);
     }
-    fseek(F,rem,SEEK_SET);
+   ReturnToplace(F,rem);
     return Ar;
 }
 AxiomAr*Inst(FILE*F)
@@ -160,25 +160,25 @@ AxiomAr*Inst_list(FILE*F)
 {
     AxiomAr*Ar=create_AxiomAr(inst_list);
     Ar=Ar_Insert_in_Fils_Ar(Ar,Inst(F));
-    long rem=ftell(F);
+    FilePlace rem=RememberPlace(F);
     while (1)
     {
-         rem=ftell(F);
+         rem=RememberPlace(F);
          switch (next_token(F)) 
          {
          case id:
          case read:
          case write:
-         fseek(F,rem,SEEK_SET);
+        ReturnToplace(F,rem);
          Ar=Ar_Insert_in_Fils_Ar(Ar,Inst(F));
          break;
          default:
-            fseek(F,rem,SEEK_SET);
+           ReturnToplace(F,rem);
             return Ar;
             break;
          }
     }
-    fseek(F,rem,SEEK_SET);
+   ReturnToplace(F,rem);
     return Ar;
 }
 

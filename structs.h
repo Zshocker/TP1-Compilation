@@ -4,6 +4,7 @@
 #include<string.h>
 #include<stdlib.h>
 unsigned long NUMLIGNE=1;
+unsigned long AxeNUMLIGNE;
 char token_buffer[100];
 /*typedef enum token_type{
     begin,end,read,write,id,intliteral,rparem,lparem,semicolon,comma,assignOp,plusOp,minusOp,floatt,scanof,err
@@ -25,7 +26,10 @@ typedef struct Ar
     Axiom Ax;
     ListAr*children;
 }AxiomAr;
-
+typedef struct{
+    unsigned long NUMLIGNE;
+    unsigned long Rem;
+}FilePlace;
 
 void init_buffer()
 {
@@ -58,4 +62,16 @@ void print_fichier(char *chemin)
         while((c=getc(file))!=EOF)printf("%c",c);
     }
     fclose(file);
+}
+FilePlace RememberPlace(FILE *file)
+{
+    FilePlace new;
+    new.NUMLIGNE=NUMLIGNE;
+    new.Rem=ftell(file);
+    return new;
+}
+void ReturnToplace(FILE *file,FilePlace He)
+{
+    NUMLIGNE=He.NUMLIGNE;
+    fseek(file,He.Rem,SEEK_SET);
 }
