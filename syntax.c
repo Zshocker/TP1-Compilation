@@ -1,4 +1,5 @@
 #include"AxiomAr.c"
+#include"lexical_scanner.c"
 Axiom turnBufferToToken()
 {
     for (int i = 0; i < 16; i++)
@@ -9,6 +10,7 @@ Axiom turnBufferToToken()
 }
 Axiom next_token(FILE*F)
 {
+    if(Mode==2){
     init_buffer();
     char c;
     while(isspace(c=fgetc(F))){
@@ -26,6 +28,7 @@ Axiom next_token(FILE*F)
         buffer_char(c);
     }
     return turnBufferToToken();
+    }else if(Mode==1) return scanner(F,NULL);
 }
 AxiomAr* Expression(FILE*F);
 
