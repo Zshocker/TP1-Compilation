@@ -1,5 +1,5 @@
 begin
-    var:=0.5e+4+1;
+    0.5e+4+1;
     var:=0.5e+4+1;
     read(var);
     write(3+5,var);

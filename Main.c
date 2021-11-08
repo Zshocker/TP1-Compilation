@@ -41,14 +41,5 @@ int main()
             break;
         }
     }while(choix!=0);
-
-
-
-
-   
-
-  
-   
-    
     return 0;
 }

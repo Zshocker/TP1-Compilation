@@ -1,5 +1,6 @@
 #include"AxiomAr.c"
 #include"lexical_scanner.c"
+FilePlace WQ;
 Axiom turnBufferToToken()
 {
     for (int i = 0; i < 16; i++)
@@ -10,6 +11,7 @@ Axiom turnBufferToToken()
 }
 Axiom next_token(FILE*F)
 {
+    WQ=RememberPlace(F);
     if(Mode==2){
     init_buffer();
     char c;
@@ -123,6 +125,7 @@ AxiomAr*Id_list(FILE*F)
 }
 AxiomAr*Inst(FILE*F,Axiom*s)
 {
+    FilePlace rem;
     AxiomAr*Ar=create_AxiomAr(inst);
     Axiom tok;
     if(*s!=LexErr)
@@ -155,6 +158,12 @@ AxiomAr*Inst(FILE*F,Axiom*s)
         break;    
     default:
         Ar=Match(Ar,*s=syntax_Eror(tok,inst),LexErr);
+        int ns=NUMLIGNE;
+        while((tok=next_token(F))!=scanof&& ns==NUMLIGNE)
+        {
+            Ar_Insert_in_Fils(Ar,tok);
+        }
+        ReturnToplace(F,WQ);
         break;
     }
     return Ar;
